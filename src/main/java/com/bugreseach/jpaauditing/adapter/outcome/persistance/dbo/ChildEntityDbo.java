@@ -15,8 +15,8 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Table(name = "child_entity")
@@ -33,10 +33,10 @@ public class ChildEntityDbo {
   String name;
 
   @Column(name = "created_at", nullable = false, updatable = false)
-  @CreatedDate
+  @CreationTimestamp
   LocalDateTime createdAt;
 
-  @LastModifiedDate
+  @UpdateTimestamp
   LocalDateTime lastModifiedDate;
 
   @Version
