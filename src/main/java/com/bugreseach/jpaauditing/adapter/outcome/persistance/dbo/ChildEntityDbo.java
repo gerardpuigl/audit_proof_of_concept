@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +47,7 @@ public class ChildEntityDbo {
   private UUID parentEntityId;
 
   /** RELATIONAL OBJECTS */
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+  @ManyToOne( optional = false)
   @JoinColumn(name = "parent_entity_id", nullable = false, insertable = false, updatable = false)
   private ParentEntityDbo parentEntity;
 
