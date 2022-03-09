@@ -2,30 +2,27 @@ package com.bugreseach.jpaauditing.adapter.outcome.persistance.dbo;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.Version;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Table(name = "child_entity")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode
+
 public class ChildEntityDbo {
 
   @Id
@@ -34,20 +31,20 @@ public class ChildEntityDbo {
   String name;
 
   @Column(name = "created_at", nullable = false, updatable = false)
-  @CreatedDate
+  @CreationTimestamp
   LocalDateTime createdAt;
 
-  @LastModifiedDate
+  @UpdateTimestamp
   LocalDateTime lastModifiedDate;
 
   @Version
-  int version = 0;
+  int version;
 
   @Column(name = "parent_entity_id")
   private UUID parentEntityId;
 
   /** RELATIONAL OBJECTS */
-  @ManyToOne( optional = false)
+  @ManyToOne(optional = false)
   @JoinColumn(name = "parent_entity_id", nullable = false, insertable = false, updatable = false)
   private ParentEntityDbo parentEntity;
 

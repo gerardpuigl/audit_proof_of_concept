@@ -6,26 +6,24 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Table(name = "parent_entity")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode
 public class ParentEntityDbo {
 
   @Id
@@ -37,12 +35,12 @@ public class ParentEntityDbo {
   List<ChildEntityDbo> childEntityList;
 
   @Column(name = "created_at", nullable = false, updatable = false)
-  @CreatedDate
+  @CreationTimestamp
   LocalDateTime createdAt;
 
-  @LastModifiedDate
+  @UpdateTimestamp
   LocalDateTime lastModifiedDate;
 
   @Version
-  int version = 0;
+  int version;
 }
