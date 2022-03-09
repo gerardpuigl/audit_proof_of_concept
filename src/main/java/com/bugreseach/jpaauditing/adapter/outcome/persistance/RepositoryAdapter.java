@@ -3,7 +3,6 @@ package com.bugreseach.jpaauditing.adapter.outcome.persistance;
 import com.bugreseach.jpaauditing.adapter.outcome.persistance.dbo.ParentEntityDbo;
 import com.bugreseach.jpaauditing.adapter.outcome.persistance.mapping.DboToDomMapper;
 import com.bugreseach.jpaauditing.adapter.outcome.persistance.mapping.DomToDboMapper;
-import com.bugreseach.jpaauditing.adapter.outcome.persistance.mapping.UpdateMapper;
 import com.bugreseach.jpaauditing.adapter.outcome.persistance.repository.JpaAuditingRepository;
 import com.bugreseach.jpaauditing.domain.ParentEntity;
 import java.util.Optional;
@@ -23,7 +22,6 @@ public class RepositoryAdapter {
   @Autowired
   JpaAuditingRepository repository;
 
-  UpdateMapper updateMapper = Mappers.getMapper(UpdateMapper.class);
   DomToDboMapper toDboMapper = Mappers.getMapper(DomToDboMapper.class);
   DboToDomMapper toDomMapper = Mappers.getMapper(DboToDomMapper.class);
 
@@ -50,15 +48,11 @@ public class RepositoryAdapter {
     ParentEntityDbo oldParentEntity = repository.findById(newParentEntity.getId())
         .orElseThrow(()->new RuntimeException("Entity with id " + newParentEntity.getId().toString() + "not found."));
 
-    //update old entity
-    ParentEntityDbo updatedParentEntity = updateMapper.updateParentEntity(newParentEntity,
-        oldParentEntity);
-
     //set foregint keys
-    updatedParentEntity.getChildEntityList()
-        .forEach(childEntity -> childEntity.setParentEntityId(updatedParentEntity.getId()));
+    newParentEntity.getChildEntityList()
+        .forEach(childEntity -> childEntity.setParentEntityId(newParentEntity.getId()));
 
-    repository.save(updatedParentEntity);
+    repository.save(newParentEntity);
   }
 
   @Transactional
