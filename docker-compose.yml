@@ -1,0 +1,17 @@
+version: '3'
+
+volumes:
+  db:
+
+services:
+  db:
+    container_name: postgress-jpa_auditing
+    image: postgres:alpine
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: jpa_auditing
+      POSTGRES_USER: jpa_auditing
+      POSTGRES_PASSWORD: jpa_auditing
+    volumes:
+      - db:/var/lib/postgresql/data

@@ -1,0 +1,19 @@
+spring:
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    properties:
+      hibernate:
+        default_schema: public
+        ddl-auto: create-drop
+    database: POSTGRESQL
+    show-sql: true
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
+    serialization:
+      write-dates-as-timestamps: false
+  datasource:
+    url: jdbc:postgresql://localhost:5435/jpa_auditing
+    username: jpa_auditing
+    password: jpa_auditing
+    driverClassName: org.postgresql.Driver
