@@ -49,7 +49,7 @@ public class RepositoryAdapter {
     ParentEntityDbo oldParentEntity = repository.findById(newParentEntity.getId())
         .orElseThrow(()->new RuntimeException("Entity with id " + newParentEntity.getId().toString() + "not found."));
 
-    //update old entity
+    //update dates
     updateParentEntity(newParentEntity, oldParentEntity);
 
     //set foregint keys
