@@ -25,10 +25,10 @@ public interface UpdateMapper {
             newChild ->
             {
               Optional<ChildEntityDbo> oldAddress = oldChildEntityDboList.stream()
-                  .filter(child -> child.getId() == newChild.getId())
+                  .filter(child -> child.getId().equals(newChild.getId()))
                   .findAny();
               if (oldAddress.isPresent()) {
-                updatedArrayList.add(updateChildEntity(oldAddress.get(), newChild));
+                updatedArrayList.add(updateChildEntity(newChild,oldAddress.get()));
               } else {
                 updatedArrayList.add(newChild);
               }
@@ -38,7 +38,6 @@ public interface UpdateMapper {
     oldChildEntityDboList.addAll(updatedArrayList);
   }
 
-  @Mapping(target = "parentEntity", ignore = true)
   ChildEntityDbo updateChildEntity(
        ChildEntityDbo newEntity, @MappingTarget ChildEntityDbo originalEntity);
 }

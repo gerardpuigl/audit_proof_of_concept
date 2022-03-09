@@ -50,15 +50,15 @@ public class RepositoryAdapter {
     ParentEntityDbo oldParentEntity = repository.findById(newParentEntity.getId())
         .orElseThrow(()->new RuntimeException("Entity with id " + newParentEntity.getId().toString() + "not found."));
 
-//    //update old entity
-//    ParentEntityDbo updatedParentEntity = updateMapper.updateParentEntity(newParentEntity,
-//        oldParentEntity);
+    //update old entity
+    ParentEntityDbo updatedParentEntity = updateMapper.updateParentEntity(newParentEntity,
+        oldParentEntity);
 
     //set foregint keys
-    newParentEntity.getChildEntityList()
-        .forEach(childEntity -> childEntity.setParentEntityId(newParentEntity.getId()));
+    updatedParentEntity.getChildEntityList()
+        .forEach(childEntity -> childEntity.setParentEntityId(updatedParentEntity.getId()));
 
-    repository.save(newParentEntity);
+    repository.save(updatedParentEntity);
   }
 
   @Transactional
