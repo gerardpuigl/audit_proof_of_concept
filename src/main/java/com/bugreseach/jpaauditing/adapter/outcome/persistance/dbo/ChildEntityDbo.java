@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 @EntityListeners(AuditingEntityListener.class)
 public class ChildEntityDbo {
 
@@ -40,7 +42,7 @@ public class ChildEntityDbo {
   LocalDateTime lastModifiedDate;
 
   @Version
-  int version = 0;
+  int version;
 
   @Column(name = "parent_entity_id")
   private UUID parentEntityId;
