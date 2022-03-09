@@ -18,17 +18,17 @@ public interface UpdateMapper {
 
   //mapper to update the entity but keep the @CreatedDate & @UpdateDate
   default void updateChildEntityList(List<ChildEntityDbo> newChildEntityDboList,
-          @MappingTarget List<ChildEntityDbo> oldChildEntityDboList) {
+      @MappingTarget List<ChildEntityDbo> oldChildEntityDboList) {
     List<ChildEntityDbo> updatedArrayList = new ArrayList<>();
     newChildEntityDboList
         .forEach(
             newChild ->
             {
               Optional<ChildEntityDbo> oldAddress = oldChildEntityDboList.stream()
-                  .filter(child -> child.getId() == newChild.getId())
+                  .filter(child -> child.getId().equals(newChild.getId()))
                   .findAny();
               if (oldAddress.isPresent()) {
-                updatedArrayList.add(updateChildEntity(oldAddress.get(), newChild));
+                updatedArrayList.add(updateChildEntity(newChild, oldAddress.get()));
               } else {
                 updatedArrayList.add(newChild);
               }
@@ -40,5 +40,5 @@ public interface UpdateMapper {
 
   @Mapping(target = "parentEntity", ignore = true)
   ChildEntityDbo updateChildEntity(
-       ChildEntityDbo newEntity, @MappingTarget ChildEntityDbo originalEntity);
+      ChildEntityDbo newEntity, @MappingTarget ChildEntityDbo originalEntity);
 }
