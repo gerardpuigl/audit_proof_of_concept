@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UpdateMapper {
 
+  @Mapping(target = "version", ignore = true)
   ParentEntityDbo updateParentEntity(
       ParentEntityDbo newEntity, @MappingTarget ParentEntityDbo originalEntity);
 
@@ -37,6 +39,7 @@ public interface UpdateMapper {
     oldChildEntityDboList.addAll(updatedArrayList);
   }
 
+  @Mapping(target = "version", ignore = true)
   ChildEntityDbo updateChildEntity(
       ChildEntityDbo newEntity, @MappingTarget ChildEntityDbo originalEntity);
 }
