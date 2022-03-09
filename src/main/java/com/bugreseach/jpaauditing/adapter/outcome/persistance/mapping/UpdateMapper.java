@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
@@ -28,7 +27,7 @@ public interface UpdateMapper {
                   .filter(child -> child.getId().equals(newChild.getId()))
                   .findAny();
               if (oldAddress.isPresent()) {
-                updatedArrayList.add(updateChildEntity(newChild, oldAddress.get()));
+                updatedArrayList.add(updateChildEntity(newChild,oldAddress.get()));
               } else {
                 updatedArrayList.add(newChild);
               }
@@ -38,7 +37,6 @@ public interface UpdateMapper {
     oldChildEntityDboList.addAll(updatedArrayList);
   }
 
-  @Mapping(target = "parentEntity", ignore = true)
   ChildEntityDbo updateChildEntity(
       ChildEntityDbo newEntity, @MappingTarget ChildEntityDbo originalEntity);
 }
