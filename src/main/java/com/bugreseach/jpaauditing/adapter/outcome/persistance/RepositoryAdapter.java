@@ -10,8 +10,10 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.StaleObjectStateException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
 
@@ -56,25 +58,31 @@ public class RepositoryAdapter {
     newParentEntity.getChildEntityList()
         .forEach(childEntity -> childEntity.setParentEntityId(newParentEntity.getId()));
 
-    repository.save(newParentEntity);
+    try {
+      repository.save(newParentEntity);
+    } catch (ObjectOptimisticLockingFailureException e){
+      System.out.println(e.getMessage() +
+          " \n " + " The entity with id: " + e.getIdentifier() + " detected by version change number.");
+    }
+
   }
 
   private void updateParentEntity(ParentEntityDbo newParentEntity, ParentEntityDbo oldParentEntity) {
 
+    //update parent dates
     newParentEntity.setCreatedAt(oldParentEntity.getCreatedAt());
     newParentEntity.setLastModifiedDate(oldParentEntity.getLastModifiedDate());
 
+    //update child dates if match
     newParentEntity.getChildEntityList()
         .forEach(
-            newChild ->
-            {
-              Optional<ChildEntityDbo> oldAddress = oldParentEntity.getChildEntityList().stream()
-                  .filter(child -> child.getId().equals(newChild.getId()))
-                  .findAny();
-              if (oldAddress.isPresent()) {
-                newChild.setCreatedAt(oldAddress.get().getCreatedAt());
-                newChild.setLastModifiedDate(oldAddress.get().getLastModifiedDate());
-              }
+            newChild -> {
+              oldParentEntity.getChildEntityList().stream()
+                  .filter(oldchild -> oldchild.getId().equals(newChild.getId()))
+                  .forEach(oldChild -> {
+                    newChild.setCreatedAt(oldChild.getCreatedAt());
+                    newChild.setLastModifiedDate(oldChild.getLastModifiedDate());
+                  });
             }
         );
   }
