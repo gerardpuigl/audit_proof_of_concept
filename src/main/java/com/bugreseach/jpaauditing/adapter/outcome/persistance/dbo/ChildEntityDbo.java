@@ -32,11 +32,11 @@ public class ChildEntityDbo {
   String name;
 
   @Column(name = "created_at", nullable = false, updatable = false)
-  @OptimisticLock(excluded = false)
+  @OptimisticLock(excluded = true)
   @CreationTimestamp
   LocalDateTime createdAt;
 
-  @OptimisticLock(excluded = false)
+  @OptimisticLock(excluded = true)
   @UpdateTimestamp
   LocalDateTime lastModifiedDate;
 
