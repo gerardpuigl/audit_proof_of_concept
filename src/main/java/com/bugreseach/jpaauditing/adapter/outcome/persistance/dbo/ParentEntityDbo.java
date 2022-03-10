@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OptimisticLock;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -40,9 +41,11 @@ public class ParentEntityDbo {
 
   @Column(name = "created_at", nullable = false, updatable = false)
   @CreatedDate
+  @OptimisticLock(excluded = true) // avoid version update version change
   LocalDateTime createdAt;
 
   @LastModifiedDate
+  @OptimisticLock(excluded = true) // avoid version update version change
   LocalDateTime lastModifiedDate;
 
   @Version
